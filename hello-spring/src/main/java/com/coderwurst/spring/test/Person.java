@@ -15,7 +15,17 @@ public class Person {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public void onCreate() {
+		// complex init methods in here
+		System.out.println("Person created: " + this);
+	}
 
+	public void onDestroy() {
+		// complex destroy methods in here
+		System.out.println("Person destroyed: " + this);
+	}
+	
 	public void setTaxId(int taxId) {
 		this.taxId = taxId;
 	}

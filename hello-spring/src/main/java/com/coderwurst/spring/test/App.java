@@ -12,13 +12,12 @@ public class App {
 		ApplicationContext context = new ClassPathXmlApplicationContext("com/coderwurst/spring/test/beans/beans.xml");
 		
 		// file has been found, bean returns the Person Object
-		Person person = (Person) context.getBean("person");
-		person.speak();
+		Person person1 = (Person) context.getBean("person");
+		Person person2 = (Person) context.getBean("person");
 		
-		Address address = (Address) context.getBean("address");
-		System.out.println(address);
+		person1.setTaxId(666);
 		
-		System.out.println(person);
+		System.out.println(person2);
 		
 		// cannot close AppContext but can close FSXAC therefore we cast it
 		((ClassPathXmlApplicationContext)context).close();

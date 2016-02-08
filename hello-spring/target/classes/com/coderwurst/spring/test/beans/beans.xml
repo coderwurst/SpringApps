@@ -3,8 +3,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean 	id="person"
-		class="com.coderwurst.spring.test.Person">
-</bean>
+	<bean id="person" class="com.coderwurst.spring.test.Person">
+		<constructor-arg name="id" value="777" type="int"></constructor-arg>
+		<constructor-arg name="name" value="John" type="String"></constructor-arg>
+		<property name="taxId">
+			<value>321</value>
+		</property>
+		<property name="address" ref="address"></property>
+	</bean>
+
+	<bean id="address" class="com.coderwurst.spring.test.Address">
+		<constructor-arg name="street">
+			<value>10 Main Street</value>
+		</constructor-arg>
+		<constructor-arg name="postcode">
+			<value>BT1 234</value>
+		</constructor-arg>
+	</bean>
 
 </beans>

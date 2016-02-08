@@ -11,6 +11,11 @@ public class Person {
 		
 	}
 	
+	public static Person getInstance(int id, String name) {
+		System.out.println("Person created using getInstance() Method");
+		return new Person(id, name);
+	}
+	
 	public Person(int id, String name) {
 		this.id = id;
 		this.name = name;

@@ -19,6 +19,22 @@ public class Address {
 		System.out.println("Bean created: " + this);
 	}
 	
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
 	public void destroy() {
 		System.out.println("Bean destroyed: " + this);
 	}

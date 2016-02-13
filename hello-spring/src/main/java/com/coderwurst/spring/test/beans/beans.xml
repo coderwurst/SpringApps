@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-init-method="init" default-destroy-method="destroy">
 
@@ -13,16 +14,6 @@
 		</property>
 		<property name="address" ref="address"></property>
 	</bean>
-	
-	<bean id="person2" class="com.coderwurst.spring.test.Person" scope="singleton"
-	factory-method="createPerson" init-method="onCreate"
-	destroy-method="onDestroy" factory-bean="personFactory">
-		<constructor-arg name="id" value="888" type="int"></constructor-arg>
-		<constructor-arg name="name" value="Mary" type="String"></constructor-arg>
-		<property name="taxId">
-			<value>666</value>
-		</property>
-	</bean>
 
 	<bean id="address" class="com.coderwurst.spring.test.Address">
 		<constructor-arg name="street">
@@ -32,6 +23,8 @@
 			<value>BT1 234</value>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="address2" class="com.coderwurst.spring.test.Address" p:street="Address Number 2" p:postcode="BT12 234"></bean>
 	
 	<bean id="personFactory" class="com.coderwurst.spring.test.PersonFactory">
 	</bean>

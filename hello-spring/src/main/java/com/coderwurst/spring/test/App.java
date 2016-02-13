@@ -15,6 +15,9 @@ public class App {
 		Person person = (Person) context.getBean("person");
 		person.setTaxId(888);
 		
+		Address address2 = (Address)context.getBean("address2");
+		System.out.println(address2);
+		
 		// cannot close AppContext but can close FSXAC therefore we cast it
 		((ClassPathXmlApplicationContext)context).close();
 	}

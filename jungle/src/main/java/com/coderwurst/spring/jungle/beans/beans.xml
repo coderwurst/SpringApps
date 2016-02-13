@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Welcome to the Jungle -->
+	<bean id="jungle" class="com.coderwurst.spring.jungle.Jungle">
+		<property name="largest" ref="elephant"></property>
+		<property name="animals">
+			<list>
+				<ref bean="snake" />
+				<ref bean="tiger" />
+				<ref bean="lion" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- Animal Beans -->
+	<bean id="lion" class="com.coderwurst.spring.jungle.Animal">
+		<property name="name" value="leo"></property>
+		<property name="type" value="lion"></property>
+	</bean>
+
+	<bean id="tiger" class="com.coderwurst.spring.jungle.Animal">
+		<property name="name" value="tony"></property>
+		<property name="type" value="tiger"></property>
+	</bean>
+
+	<bean id="elephant" class="com.coderwurst.spring.jungle.Animal">
+		<property name="name" value="edward"></property>
+		<property name="type" value="elephant"></property>
+	</bean>
+
+	<bean id="snake" class="com.coderwurst.spring.jungle.Animal">
+		<property name="name" value="simon"></property>
+		<property name="type" value="snake"></property>
+	</bean>
+
+
+</beans>

@@ -1,25 +1,18 @@
 package com.coderwurst.spring.jungle;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Jungle {
 
-	private Animal largest;
-	private List<Animal> animals;
-
-	public void setLargest(Animal animal) {
-		this.largest = animal;
+	private Map <String, String> foods = new HashMap <String, String>();
+	private Map <String, Animal> animals = new HashMap <String, Animal>();
+	
+	public void setFoods(Map <String, String> foods) {
+		this.foods = foods;
 	}
 	
-	public Animal getLargest() {
-		return largest;
-	}
-
-	public List<Animal> getAnimals() {
-		return animals;
-	}
-
-	public void setAnimals(List<Animal> animals) {
+	public void setAnimals(Map <String, Animal> animals) {
 		this.animals = animals;
 	}
 
@@ -27,14 +20,19 @@ public class Jungle {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("Largest: " + largest);
-		sb.append("\n");
-		sb.append("Others: \n");
-
-		for (Animal animal : animals) {
-			sb.append(animal);
+		for (Map.Entry <String, String> entry : foods.entrySet()) {
+			sb.append(entry.getKey() + "; " + entry.getValue() + "\n");
 			sb.append("\n");
 		}
+		
+		sb.append("\n");
+		
+		for (Map.Entry <String, Animal> entry : animals.entrySet()) {
+			sb.append(entry.getKey() + "; " + entry.getValue() + "\n");
+			sb.append("\n");
+		}
+		
+		
 		return sb.toString();
 	}
 }

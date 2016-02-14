@@ -5,13 +5,22 @@
 
 	<!-- Welcome to the Jungle -->
 	<bean id="jungle" class="com.coderwurst.spring.jungle.Jungle">
-		<property name="largest" ref="elephant"></property>
+		<property name="foods">
+			<props>
+				<prop key="gorilla">banana</prop>
+				<prop key="parrot">nuts</prop>
+				<prop key="lion">people</prop>
+				<prop key="panda">bamboo</prop>
+				<prop key="snake">insects</prop>
+			</props>
+		</property>
 		<property name="animals">
-			<list>
-				<ref bean="snake" />
-				<ref bean="tiger" />
-				<ref bean="lion" />
-			</list>
+			<map>
+				<entry key="lion" value-ref="lion"></entry>
+				<entry key="tiger" value-ref="tiger"></entry>
+				<entry key="elephant" value-ref="elephant"></entry>
+				<entry key="snake" value-ref="snake"></entry>
+			</map>
 		</property>
 	</bean>
 

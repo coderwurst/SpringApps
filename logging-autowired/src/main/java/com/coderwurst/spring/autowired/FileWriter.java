@@ -1,5 +1,4 @@
-package com.coderwurst.spring.logger;
-
+package com.coderwurst.spring.autowired;
 
 public class FileWriter implements LogWriter{
 

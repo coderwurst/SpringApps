@@ -1,6 +1,8 @@
-package com.coderwurst.spring.logger;
+package com.coderwurst.spring.automatic;
 
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileWriter implements LogWriter{
 
 	public void write(String text) {

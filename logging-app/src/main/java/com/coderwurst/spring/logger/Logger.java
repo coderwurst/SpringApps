@@ -2,8 +2,8 @@ package com.coderwurst.spring.logger;
 
 public class Logger {
 	
-	private ConsoleWriter consoleWriter = new ConsoleWriter();
-	private FileWriter fileWriter = new FileWriter();
+	private ConsoleWriter consoleWriter;
+	private FileWriter fileWriter;
 		
 	public void writeFile(String text) {
 		this.fileWriter.write(text);

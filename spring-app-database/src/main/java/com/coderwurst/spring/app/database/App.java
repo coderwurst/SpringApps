@@ -1,5 +1,6 @@
 package com.coderwurst.spring.app.database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -17,18 +18,19 @@ public class App
 
     	try {
     		
-    		/*boolean result = offersDao.delete(4);
+    		//createInitialOffers(offersDao);
+    		//printDb(offersDao);
     		
-    		System.out.println("result of delete: " + result);*/
+    		//runUpdate(offersDao);
+    		//printDb(offersDao);
     		
-    		List <Offer> offers = offersDao.getOffers();
-        	
-        	for (Offer offer : offers) {
-        		System.out.println(offer.toString());
-        	}
-        	
-        	Offer offer = offersDao.getOffer(2);
-        	System.out.println("Should be Mike: " + offer);
+    		// batchUpdate(offersDao);
+    		
+    		batchUpdateTransactional(offersDao);
+    		
+    		printDb(offersDao);
+    		
+    		
     		
     	} catch (CannotGetJdbcConnectionException ex) {
     		
@@ -44,4 +46,73 @@ public class App
     	
     	((ClassPathXmlApplicationContext)context).close();
     }
+
+	private static void batchUpdate(OffersDAO offersDao) {
+		List <Offer> offers = new ArrayList <Offer>();
+		offers.add(new Offer("David","david@mail.com","sql"));
+		offers.add(new Offer("Joe","joe@mail.com","JUnit expert"));
+		offers.add(new Offer("Susanne","susane@mail.com","elegent web design"));
+		
+		int [] rvals = offersDao.create(offers);
+		
+		for (int value : rvals) {
+			System.out.println("DB Updated: " + value);
+		}
+	}
+	
+	private static void batchUpdateTransactional(OffersDAO offersDao) {
+		List <Offer> offers = new ArrayList <Offer>();
+		offers.add(new Offer(44, "David","david@mail.com","sql"));
+		offers.add(new Offer(45, "Joe","joe@mail.com","JUnit expert"));
+		offers.add(new Offer(44, "Susanne","susane@mail.com","elegent web design"));
+		
+		int [] rvals = offersDao.createTransactional(offers);
+		
+		for (int value : rvals) {
+			System.out.println("DB Updated: " + value);
+		}
+	}
+
+	private static void runUpdate(OffersDAO offersDao) {
+		// user constructor with Id, this offer to be used to test update method
+		Offer updateOffer = new Offer(37, "Jimmy", "jimmy@mail.com", "jim 'il fix it");
+		
+		if(offersDao.update(updateOffer)) {
+			System.out.println("updated with offer 3");
+		} else {
+			System.out.println("not able to update with offer 3");
+		}
+	}
+
+	private static void createInitialOffers(OffersDAO offersDao) {
+		/*boolean result = offersDao.delete(4);
+		
+		System.out.println("result of delete: " + result);*/
+		
+		Offer offer1 = new Offer("Dave", "dave@mail.com", "coding Java");
+		Offer offer2 = new Offer("Karen", "karen@mail.com", "software testing and QAT");
+		
+		if(offersDao.create(offer1)) {
+			System.out.println("create offer 1");
+		}
+		
+		if(offersDao.create(offer2)) {
+			System.out.println("create offer 2");
+		}
+		
+		retrieveRecord(offersDao);
+	}
+
+	private static void retrieveRecord(OffersDAO offersDao) {
+		Offer offer = offersDao.getOffer(2);
+		System.out.println("Should be Mike: " + offer);
+	}
+
+	private static void printDb(OffersDAO offersDao) {
+		List <Offer> offers = offersDao.getOffers();
+		
+		for (Offer offer : offers) {
+			System.out.println(offer.toString());
+		}
+	}
 }

@@ -23,4 +23,14 @@ public class OffersService {
 		return offersDAO.getOffers();
 	}
 
+	public void create(Offer offer) {
+		// more complicated code - authentication, etc.
+		offersDAO.create(offer);
+	}
+
+	// test method to throw exception
+	public void throwTestException() {
+		offersDAO.getOffer(99999);
+	}
+
 }

@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.coderwurst.spring.web.validation.ValidEmail;
+
 /*
  * to contain 1 row at a time from the offers table in DB
  */
@@ -15,7 +17,8 @@ public class Offer {
 	private String name;
 	
 	@NotNull
-	@Pattern(regexp=".*\\@.*\\..*", message="this does not appear to be a valid email address")		// ./* = some text, \\@ '@' sign (escaped \), more text with '.'
+	// @Pattern(regexp=".*\\@.*\\..*", message="this does not appear to be a valid email address")		// ./* = some text, \\@ '@' sign (escaped \), more text with '.'
+	@ValidEmail(min=6, message="email address not valid")	// custom length and message
 	private String email;
 	
 	@Size (min=20, max=255, message="text must be between 20 and 255 characters")

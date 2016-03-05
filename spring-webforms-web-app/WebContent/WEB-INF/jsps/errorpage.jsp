@@ -7,9 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-offer created successfully
-
-<p><a href="${pageContext.request.contextPath}/offers">current offers</a></p>
-
+	Oops - an unforseen error has occurred - DB Error
 </body>
 </html>

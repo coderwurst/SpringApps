@@ -70,6 +70,7 @@ public class OffersDAO {
 	
 	public boolean create(Offer offer) {
 		
+		System.out.println(">>> adding to database");
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(offer);
 		
 		return jdbc.update("insert into offers (name, text, email) values (:name, :text, :email)", params) == 1;

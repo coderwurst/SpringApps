@@ -35,3 +35,7 @@ table.offers {
 	padding: 10px;
 	border: 1px solid grey;
 }
+
+p.error {
+	color: red;
+}

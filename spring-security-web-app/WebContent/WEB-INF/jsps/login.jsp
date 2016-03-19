@@ -35,5 +35,8 @@
 		</table>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
+	
+	<p><a href="<c:url value="/newaccount"/>">create account</a></p>
+	
 </body>
 </html>

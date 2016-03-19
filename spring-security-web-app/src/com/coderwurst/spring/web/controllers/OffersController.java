@@ -80,8 +80,6 @@ public class OffersController {
 			
 			return "offercreated"; // docreate.jsp
 		}		
-	}
-	
-	
+	}	
 
 }

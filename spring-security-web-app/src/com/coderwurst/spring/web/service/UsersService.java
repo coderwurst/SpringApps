@@ -20,4 +20,8 @@ public class UsersService {
 		// more complicated code - authentication, etc.
 		usersDao.create(user);
 	}
+
+	public boolean exists(String username) {
+		return usersDao.exists(username);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -59,8 +60,24 @@ public class LoginController {
 			user.setEnabled(true);
 
 			System.out.println(user);
-			usersService.create(user);
-
+			
+			if(usersService.exists(user.getUsername())) {
+				System.out.println("<<< Caught duplicate username");
+				result.rejectValue("username", "DuplicateKey.user.username");
+				return "newaccount";
+			}
+			
+			
+			try {
+				usersService.create(user);
+			} catch (DuplicateKeyException e) {		// Spring wraps all DB primary key exceptions to this
+				// param 1: name of control associated with error
+				// param 2: key to look up error message in prop file, DuplicateKey.class.field
+				// param 3: duplicate message
+				result.rejectValue("username", "DuplicateKey.user.username");
+				return "newaccount";
+			}
+			
 			return "accountcreated";
 		}
 	}

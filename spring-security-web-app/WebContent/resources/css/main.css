@@ -31,6 +31,12 @@ textarea {
 	margin-left: 10px;
 }
 
+.valid {
+	font-size: small;
+	color: green;
+	margin-left: 10px;
+}
+
 table.offers {
 	padding: 10px;
 	border: 1px solid grey;

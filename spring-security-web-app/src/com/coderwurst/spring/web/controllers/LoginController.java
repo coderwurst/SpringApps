@@ -38,9 +38,25 @@ public class LoginController {
 
 	@RequestMapping("/newaccount")
 	public String showNewAccount(Model model) {
-
+		
 		model.addAttribute("user", new User());
 		return "newaccount";
+	}
+	
+	// admin area
+	@RequestMapping("/admin")
+	public String showAdmin(Model model) {
+		
+		List<User> users = usersService.getAllUsers();
+		// users can be accessed directly in jsp using j core tags forEach loop
+		model.addAttribute("users", users);
+
+		return "admin";
+	}
+	
+	@RequestMapping("/denied")
+	public String showDenied() {
+		return "denied";
 	}
 
 

@@ -12,11 +12,5 @@ public class HomeController {
 	public String showHome(Model model) {	
 		return "home";
 	}
-	
-	// admin area
-	@RequestMapping("/admin")
-	public String showAdmin() {
-		return "admin";
-	}
 
 }

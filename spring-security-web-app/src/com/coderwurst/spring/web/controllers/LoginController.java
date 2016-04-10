@@ -77,7 +77,7 @@ public class LoginController {
 		} else {
 			System.out.println("<<< user create form validated");
 			
-			user.setAuthority("user");
+			user.setAuthority("ROLE_USER");
 			user.setEnabled(true);
 
 			System.out.println(user);

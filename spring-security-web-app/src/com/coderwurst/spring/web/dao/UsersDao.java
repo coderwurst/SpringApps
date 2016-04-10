@@ -6,9 +6,9 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,9 @@ public class UsersDao {
 	private NamedParameterJdbcTemplate jdbc;
 	
 	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
 	public void setDataSource(DataSource jdbc) {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
 	}
@@ -25,7 +28,14 @@ public class UsersDao {
 	@Transactional		// both sql statements in this method will succeed or neither will succeed
 	public boolean create (User user) {
 		
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
+		MapSqlParameterSource params = new MapSqlParameterSource();		// allows manual setting of params compared to object as seen with BeanPropertySqlParameter Source
+		params.addValue("username", user.getUsername());
+		params.addValue("password", passwordEncoder.encode(user.getUsername()));
+		params.addValue("email", user.getEmail());
+		params.addValue("enabled", user.isEnabled());
+		params.addValue("authority", user.getAuthority());		// needed for 2nd query
+
+		// BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		
 		jdbc.update("insert into users (username, password, email, enabled) values (:username, :password, :email, :enabled)", params);
 		

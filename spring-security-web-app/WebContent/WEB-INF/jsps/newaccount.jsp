@@ -67,9 +67,9 @@ $(document).ready(onLoad);
 			<div class="error"><sf:errors path="username"></sf:errors></div></td></tr>
 			<tr><td class="label">Email: </td><td><sf:input class="control" name="email" type="text" path="email"/>
 			<div class="error"><sf:errors path="email"></sf:errors></div></td></tr>
-			<tr><td class="label">Password: </td><td><sf:input class="control" name="password" id="password" type="text" path="password"/>
+			<tr><td class="label">Password: </td><td><sf:input class="control" name="password" id="password" type="password" path="password"/>
 			<div class="error"><sf:errors path="password"></sf:errors></div></td></tr>
-			<tr><td class="label">Confirm Password: </td><td><input class="control" id="confirmpass" name="confirmpass" type="text"/>
+			<tr><td class="label">Confirm Password: </td><td><input class="control" id="confirmpass" name="confirmpass" type="password"/>
 			<div id="matchpass"></div>
 			</td></tr>
 			<tr><td class="label">&nbsp;</td><td><input class="control" value="create account" type="submit"/></td></tr>

@@ -6,7 +6,32 @@
 
 
 <p><a href="${pageContext.request.contextPath}/createoffer">create offer</a></p>
-<p><a href="${pageContext.request.contextPath}/offers">show all offers</a></p>
+
+<table class="offers">
+<tr><td>Name</td><td>Email</td><td>Services</td></tr>
+	<c:forEach var="offer" items="${offers}">
+	 <tr>
+	 	<td><c:out value="${offer.user.name}"></c:out></td>	
+	 	<td><c:out value="${offer.user.email}"></c:out></td>	
+	 	<td><c:out value="${offer.text}"></c:out></td>	
+	 </tr>
+	</c:forEach>
+</table>
+
+<c:choose>
+	<c:when test="${ hasOffer }">
+		<p>
+			<a href="${pageContext.request.contextPath}/createoffer">edit or delete your current offer</a>
+		</p>
+	</c:when>
+	<c:otherwise>
+	<p>
+		<a href="${pageContext.request.contextPath}/createoffer">add a new offer</a>
+	</p>
+	</c:otherwise>
+</c:choose>
+
+<p><a href="${pageContext.request.contextPath}/">home</a></p>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<p><a href="${pageContext.request.contextPath}/admin">admin</a></p>

@@ -37,6 +37,7 @@ public class LoginController {
 	
 	@RequestMapping("/logout")
 	public String showLogout() {
+		logger.info("attempting logout");
 		return "logout";
 	}
 

@@ -8,11 +8,3 @@
 <sec:authorize access="!isAuthenticated()">
 	<a class="login" href="${pageContext.request.contextPath}/login">login</a>
 </sec:authorize>
-
-<sec:authorize access="isAuthenticated()">
-	<!-- additional needed for Spring 4 (form submit) NEEDS UPDATED FOR TILES-->
-	<c:url var="logoutUrl" value="/logout"/>
-	<form action="${logoutUrl}" method="post">
-	<input class="login" type="submit" value="Log out"/>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> </form>
-</sec:authorize>

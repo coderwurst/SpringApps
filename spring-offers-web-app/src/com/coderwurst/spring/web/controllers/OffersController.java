@@ -52,9 +52,24 @@ public class OffersController {
 
 	// root of application localhost:8080/offers
 	@RequestMapping("/createoffer")
-	public String createOffer(Model model) {
+	public String createOffer(Model model, Principal principal) {
 
-		model.addAttribute("offer", new Offer());
+		Offer offer = null;
+		
+		// does user have any current offers
+		if (principal != null) {
+			String username = principal.getName();
+			
+			offer = offersService.getOffer(username);
+		}
+		
+		// null check
+		if (offer == null) {
+			offer = new Offer();		// creates a blank offer
+		}
+		
+		// add to model to be added to form on screen
+		model.addAttribute("offer", offer);
 		
 		return "createoffer"; // createoffer.jsp
 	}
@@ -62,7 +77,7 @@ public class OffersController {
 	// used to point to web form
 	@RequestMapping(value="/docreate", method=RequestMethod.POST)
 	public String doCreate(Model model, @Valid Offer offer, BindingResult result
-			, Principal principal) {
+			, Principal principal, @RequestParam(value="delete", required = false)String delete) {
 		
 		if(result.hasErrors()) {
 			System.out.println(">>> form does not validate:");
@@ -78,11 +93,20 @@ public class OffersController {
 			System.out.println("<<< form validated");
 			System.out.println(offer);
 			
-			String username = principal.getName();
-			offer.getUser().setUsername(username);
-			offersService.create(offer);
+			if (delete == null) {
+				
+				String username = principal.getName();
+				offer.getUser().setUsername(username);
+				offersService.saveOrUpdate(offer);
+				return "offercreated";
+			} else {
+				
+				offersService.delete(offer.getId());
+				return "offerdeleted";
+			}
 			
-			return "offercreated"; // docreate.jsp
+
+			
 		}		
 	}	
 

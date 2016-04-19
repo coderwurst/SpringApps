@@ -55,17 +55,17 @@ public class OfferDaoTests {
 		Offer offer = new Offer(user, "this is a test offer");
 		
 		// then
-		// offer has been added to DB
+		// TEST offer has been added to DB
 		assertTrue("offer creation should return true", offersDao.create(offer));	
 		
 		List <Offer> offers = offersDao.getOffers();
-		// only 1 record added
+		// TEST only 1 record added
 		assertEquals("offers should contain 1 and only 1 user", 1, offers.size());
 		
 		// compare data added - offer.equals method in Offer Object (ID omitted as can only be determined after adding to DB)
 		assertEquals("created offer should match retrieved offer identically", offer, offers.get(0));
 		
-		// get offer to perform an update
+		// TEST get offer to perform an update
 		offer = offers.get(0);
 		offer.setText("updated offer text");
 		assertTrue("offer updated correctly", offersDao.update(offer));
@@ -75,10 +75,27 @@ public class OfferDaoTests {
 		
 		assertEquals("updated offer should match retrieved offer", offer, updated);
 		
+		Offer offer2 = new Offer(user, "This is a test offer");
+		assertTrue("Offer creation should return true", offersDao.create(offer2));
+		
+		// TEST get by username
+		List <Offer> userOffers = offersDao.getOffers(user.getUsername());
+		assertEquals("should be 2 offers in DB for username", 2, userOffers.size());
+		// TODO check offers added for matching text
+		
+		// TEST get by ID
+		List <Offer> secondList = offersDao.getOffers();
+		
+		for (Offer current : secondList) {
+			Offer retrieved = offersDao.getOffer(current.getId());
+			assertEquals("both current and retrieved should match", current, retrieved);
+		}
+		
+		// TEST delete
 		offersDao.delete(offer.getId());
 		List <Offer> empty = offersDao.getOffers();
 		
-		assertEquals("offers list should be empty", 0, empty.size());
+		assertEquals("offers list should be empty", 1, empty.size());
 		
 	}
 }

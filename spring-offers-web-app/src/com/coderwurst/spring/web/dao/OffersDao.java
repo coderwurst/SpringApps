@@ -32,31 +32,14 @@ public class OffersDao {
 
 	public List <Offer> getOffers() {
 		
-		return jdbc.query("select * from offers, users where offers.username=users.username", new RowMapper<Offer>() {
-
-			// anon method - ResultSet is the data brought back from the DB
-			public Offer mapRow(ResultSet rs, int arg1) throws SQLException {
-				
-				// set user object to be added to offer
-				User user = new User();
-				user.setAuthority(rs.getString("authority"));
-				user.setEmail(rs.getString("email"));
-				user.setEnabled(true);
-				user.setName(rs.getString("name"));
-				user.setUsername(rs.getString("username"));
-				
-				// the job of this method is to map the result of a query to a single Offer object
-				Offer offer = new Offer();
-				
-				// each property is taken from the result set - grabbed via the column name
-				offer.setId(rs.getInt("id"));
-				offer.setText(rs.getString("text"));
-				offer.setUser(user);
-				
-				return offer;
-			}
-			
-		});
+		return jdbc.query("select * from offers, users where offers.username=users.username and users.enabled=true", 
+				new OfferRowMapper());
+	}
+	
+	public List <Offer> getOffers(String username) {
+		
+		return jdbc.query("select * from offers, users where offers.username=users.username and users.enabled=true and offers.username=:username", 
+				new MapSqlParameterSource("username", username), new OfferRowMapper());
 	}
 	
 	public int[] create (List<Offer> offers) {
@@ -97,31 +80,8 @@ public class OffersDao {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
 		
-		return jdbc.queryForObject("select * from offers, users where offers.username=users.username", params, new RowMapper<Offer>() {
-
-			// anon method - ResultSet is the data brought back from the DB
-			public Offer mapRow(ResultSet rs, int arg1) throws SQLException {
-				
-				// set user object to be added to offer
-				User user = new User();
-				user.setAuthority(rs.getString("authority"));
-				user.setEmail(rs.getString("email"));
-				user.setEnabled(true);
-				user.setName(rs.getString("name"));
-				user.setUsername(rs.getString("username"));
-				
-				// the job of this method is to map the result of a query to a single Offer object
-				Offer offer = new Offer();
-				
-				// each property is taken from the result set - grabbed via the column name
-				offer.setId(rs.getInt("id"));
-				offer.setText(rs.getString("text"));
-				offer.setUser(user);
-				
-				return offer;
-			}
-			
-		});
+		return jdbc.queryForObject("select * from offers, users where offers.username=users.username and users.enabled=true and id=:id", 
+				params, new OfferRowMapper());
 	}
 	
 	

@@ -11,19 +11,19 @@ import com.coderwurst.spring.web.dao.OffersDao;
 
 @Service("offersService")
 public class OffersService {
-	
+
 	private OffersDao offersDAO;
-	
+
 	@Autowired
 	public void setOffersDAO(OffersDao offersDAO) {
 		this.offersDAO = offersDAO;
 	}
 
-	public List <Offer> getCurrent() {
+	public List<Offer> getCurrent() {
 		return offersDAO.getOffers();
 	}
 
-	@Secured({"ROLE_USER", "ROLE_ADMIN"})
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	public void create(Offer offer) {
 		// more complicated code - authentication, etc.
 		offersDAO.create(offer);
@@ -32,6 +32,51 @@ public class OffersService {
 	// test method to throw exception
 	public void throwTestException() {
 		offersDAO.getOffer(99999);
+	}
+
+	public boolean hasOffer(String name) {
+		if (name == null) {
+			return false;
+		}
+
+		List<Offer> offers = offersDAO.getOffers(name);
+
+		if (offers.size() == 0) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	public Offer getOffer(String username) {
+
+		// incorrect username check
+		if (username == null) {
+			return null;
+		}
+
+		List<Offer> offers = offersDAO.getOffers(username);
+
+		// empty list check
+		if (offers.size() == 0) {
+			return null;
+		}
+
+		return offers.get(0);
+	}
+
+	public void saveOrUpdate(Offer offer) {
+		// if no ids in DB for user
+		if (offer.getId() != 0) {
+			offersDAO.update(offer);
+		} else {
+			offersDAO.create(offer);
+		}
+	}
+
+	public void delete(int id) {
+		offersDAO.delete(id);
 	}
 
 }

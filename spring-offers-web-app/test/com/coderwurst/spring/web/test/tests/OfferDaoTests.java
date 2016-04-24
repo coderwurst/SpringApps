@@ -49,8 +49,9 @@ public class OfferDaoTests {
 	@Test
 	public void testCreateUserCreateOffer() {
 		// given
-		User user = new User("user87", "john", "hellohello", "andrew@mail.com", true, "user");
-		assertTrue("user creation should return true", usersDao.create(user));
+		User user = new User("newTestUser22", "newTestUser", "hellohello", "andrew@mail.com", true, "user");
+		// no longer needed after adding hibernate assertTrue("user creation should return true", usersDao.create(user));
+		usersDao.create(user);
 		
 		Offer offer = new Offer(user, "this is a test offer");
 		

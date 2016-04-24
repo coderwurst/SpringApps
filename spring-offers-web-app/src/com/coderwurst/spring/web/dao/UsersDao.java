@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Component("usersDao")
 public class UsersDao {
 	
@@ -21,11 +24,18 @@ public class UsersDao {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
+	private SessionFactory sessionFactory;
+	
+	@Autowired
 	public void setDataSource(DataSource jdbc) {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
 	}
 	
-	@Transactional		// both sql statements in this method will succeed or neither will succeed
+	public Session session() {
+		return sessionFactory.getCurrentSession();
+	}
+	
+	/*@Transactional		// both sql statements in this method will succeed or neither will succeed
 	public boolean create (User user) {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();		// allows manual setting of params compared to object as seen with BeanPropertySqlParameter Source
@@ -41,6 +51,12 @@ public class UsersDao {
 		
 		return jdbc.update("insert into users (username, name, password, email, enabled, authority) values (:username, :name, :password, :email, :enabled, :authority)", params) == 1;
 			
+	}*/
+	
+	@Transactional
+	public void create (User user) {
+		// user.setPassword(passwordEncoder.encode(user.getPassword()));		ENCRYPTION VALIDATING ON 2ND LOGIN ???
+		session().save(user);	
 	}
 
 	public boolean exists(String username) {
@@ -49,10 +65,16 @@ public class UsersDao {
 				new MapSqlParameterSource("username", username), Integer.class) > 0;
 	}
 
-	public List<User> getAllUsers() {
+	/* public List<User> getAllUsers() {
 		// query db to return all users and authorites (matching pairs) and store in BeanPropertyRowMapper object
 		return jdbc.query("select * from users",
 				BeanPropertyRowMapper.newInstance(User.class));
+	} */
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsers() {
+		// query in Hibernate Query Language (HQL)
+		return session().createQuery("from User").list();
 	}
 	
 }

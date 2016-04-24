@@ -1,5 +1,9 @@
 package com.coderwurst.spring.web.dao;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -7,23 +11,28 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.coderwurst.spring.web.validation.ValidEmail;
 
+@Entity
+@Table(name="Users")
 public class User {
 
-	@NotBlank
-	@Size(min=8, max=15)
-	@Pattern(regexp="^\\w{8,}$")
+	@NotBlank (groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Size(min=8, max=15, groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Pattern(regexp="^\\w{8,}$", groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Id
+	@Column(name="username")
 	private String username;
 	
-	@NotBlank(message="password cannot be blank")
-	@Pattern(regexp="^\\S+$", message="password cannot contain spaces")		// non space chars
-	@Size(min=8, max=15, message="password must be between 8 and 15 characters long")
+	
+	@NotBlank(message="password cannot be blank", groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Pattern(regexp="^\\S+$", message="password cannot contain spaces", groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Size(min=8, max=15, message="password must be between 8 and 15 characters long", groups={FormValidationGroup.class})
 	private String password;
 	
-	@ValidEmail(message="this does not appear to be a valid email address")
+	@ValidEmail(message="this does not appear to be a valid email address", groups={PersistanceValidationGroup.class, FormValidationGroup.class})
 	private String email;
 	
-	@NotBlank
-	@Size(min=8, max=60)
+	@NotBlank (groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Size(min=8, max=60, groups={PersistanceValidationGroup.class, FormValidationGroup.class})
 	private String name;
 	
 	// no validation needed as provided by system

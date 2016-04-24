@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.coderwurst.spring.web.dao.FormValidationGroup;
 import com.coderwurst.spring.web.dao.User;
 import com.coderwurst.spring.web.service.UsersService;
 
@@ -67,7 +69,7 @@ public class LoginController {
 
 	// used to point to web form
 	@RequestMapping(value = "/createaccount", method = RequestMethod.POST)
-	public String createAccount(@Valid User user, BindingResult result) {
+	public String createAccount(@Validated(FormValidationGroup.class) User user, BindingResult result) {
 
 		if (result.hasErrors()) {
 			System.out.println(">>> user create form does not validate:");

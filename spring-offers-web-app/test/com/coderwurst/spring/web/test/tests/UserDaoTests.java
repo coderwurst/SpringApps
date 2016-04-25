@@ -1,6 +1,7 @@
 package com.coderwurst.spring.web.test.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -34,10 +35,10 @@ public class UserDaoTests {
 	private DataSource dataSource;
 	
 	
-	private User user1 = new User("newTestUser1", "newTestUser1", "hellohello", "testUser1@mail.com", true, "user");
-	private User user2 = new User("newTestUser2", "newTestUser2", "hellohello", "testUser2@mail.com", true, "user");
-	private User user3 = new User("newTestUser3", "newTestUser3", "hellohello", "testUser3@mail.com", true, "user");
-	private User user4 = new User("newTestUser4", "newTestUser4", "hellohello", "testUser4@mail.com", true, "user");
+	private User user1 = new User("newTestUser1", "newTestUser1", "hellohello", "testUser1@mail.com", true, "ROLE_USER");
+	private User user2 = new User("newTestUser2", "newTestUser2", "hellohello", "testUser2@mail.com", true, "ROLE_USER");
+	private User user3 = new User("newTestUser3", "newTestUser3", "hellohello", "testUser3@mail.com", true, "ROLE_USER");
+	private User user4 = new User("newTestUser4", "newTestUser4", "hellohello", "testUser4@mail.com", true, "ROLE_USER");
 	
 	
 	// connect and prepare test DB before running tests
@@ -52,7 +53,7 @@ public class UserDaoTests {
 	@Test
 	public void testCreateUserCreateUser() {
 		// given
-		User user = new User("newTestUser11", "newTestUser", "hellohello", "andrew@mail.com", true, "user");
+		User user = new User("newTestUser1", "newTestUser", "hellohello", "andrew@mail.com", true, "user");
 		
 		// then
 		// user has been added
@@ -91,14 +92,34 @@ public class UserDaoTests {
 	}
 	
 	@Test
-	@Ignore
 	public void getAllUsers() {
+		// given
+		usersDao.create(user1);
+		usersDao.create(user2);
+		usersDao.create(user3);
+		usersDao.create(user4);
 		
+		// then
+		List <User> users = usersDao.getAllUsers();
+				
+		assertEquals("4 items in returned list", 4, users.size());
 	}
 	
 	@Test
-	@Ignore
-	public void exists() {
+	public void testExists() {
+		
+		// given
+		usersDao.create(user1);
+		
+		// then
+		List <User> users = usersDao.getAllUsers();
+		
+		assertEquals("1 item in returned list", 1, users.size());
+		
+		assertTrue("user should exist", usersDao.exists(user1.getUsername()));
+		assertFalse("user should not exist", usersDao.exists("blah blah"));
+		
+		assertEquals("created user should be identical to retrieved user", user1, users.get(0));
 		
 	}
 

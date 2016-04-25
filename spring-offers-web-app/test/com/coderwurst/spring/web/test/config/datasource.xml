@@ -50,6 +50,10 @@
 		</bean>
 		<tx:annotation-driven />
 		
+		<bean id="exceptionTranslator"
+				class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor">
+		</bean>
+		
 	</beans>
 
 </beans>

@@ -6,16 +6,16 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.coderwurst.spring.web.dao.FormValidationGroup;
 import com.coderwurst.spring.web.dao.Offer;
 import com.coderwurst.spring.web.service.OffersService;
 
@@ -76,7 +76,7 @@ public class OffersController {
 	
 	// used to point to web form
 	@RequestMapping(value="/docreate", method=RequestMethod.POST)
-	public String doCreate(Model model, @Valid Offer offer, BindingResult result
+	public String doCreate(Model model, @Validated(value=FormValidationGroup.class) Offer offer, BindingResult result
 			, Principal principal, @RequestParam(value="delete", required = false)String delete) {
 		
 		if(result.hasErrors()) {

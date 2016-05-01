@@ -20,7 +20,7 @@ public class Offer {
 	@GeneratedValue		// flags field as automatically generated in DB
 	private int id;
 	
-	@Size (min=20, max=255, groups={PersistanceValidationGroup.class, FormValidationGroup.class})
+	@Size (min=20, max=255, groups={FormValidationGroup.class})
 	@Column(name="text")		// optional as field is text, as is DB column
 	private String text;
 	

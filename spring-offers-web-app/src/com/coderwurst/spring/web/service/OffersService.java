@@ -26,7 +26,7 @@ public class OffersService {
 	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	public void create(Offer offer) {
 		// more complicated code - authentication, etc.
-		offersDAO.create(offer);
+		offersDAO.saveOrUpdate(offer);
 	}
 
 	// test method to throw exception
@@ -67,12 +67,9 @@ public class OffersService {
 	}
 
 	public void saveOrUpdate(Offer offer) {
-		// if no ids in DB for user
-		if (offer.getId() != 0) {
-			offersDAO.update(offer);
-		} else {
-			offersDAO.create(offer);
-		}
+
+		offersDAO.saveOrUpdate(offer);
+
 	}
 
 	public void delete(int id) {

@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -39,25 +42,47 @@ public class OffersDao {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
 	}
 
-	public List <Offer> getOffers() {
+	/*public List <Offer> getOffers() {
 		
-		return jdbc.query("select * from offers, users where offers.username=users.username and users.enabled=true", 
+		return jdbc.query("select * from offers, users where "
+				+ "offers.username=users.username and users.enabled=true", 
 				new OfferRowMapper());
-	}
+	}*/
 	
-	public List <Offer> getOffers(String username) {
+	@SuppressWarnings("unchecked")
+	public List <Offer> getOffers() {
+		Criteria crit = session().createCriteria(Offer.class);
 		
-		return jdbc.query("select * from offers, users where offers.username=users.username and users.enabled=true and offers.username=:username", 
-				new MapSqlParameterSource("username", username), new OfferRowMapper());
+		crit.createAlias("user", "u").add(Restrictions.eq("u.enabled", true));
+		
+		return crit.list();
 	}
 	
-	public int[] create (List<Offer> offers) {
+	/*public List <Offer> getOffers(String username) {
+		
+		return jdbc.query("select * from offers, users where offers.username=users.username "
+				+ "and users.enabled=true and offers.username=:username", 
+				new MapSqlParameterSource("username", username), new OfferRowMapper());
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List <Offer> getOffers(String username) {
+		Criteria crit = session().createCriteria(Offer.class);
+		
+		crit.createAlias("user", "u");
+		crit.add(Restrictions.eq("u.enabled", true));
+		crit.add(Restrictions.eq("u.username", username));
+		
+		return crit.list();
+	}
+	
+	/*public int[] create (List<Offer> offers) {
 		
 		SqlParameterSource [] batchValues = SqlParameterSourceUtils.createBatch(offers.toArray());
 		
 		return jdbc.batchUpdate("insert into offers (name, text, email) values (:name, :text, :email)", batchValues);
 		
-	}
+	}*/
 	
 	@Transactional
 	public int[] createTransactional (List<Offer> offers) {
@@ -77,33 +102,55 @@ public class OffersDao {
 		
 	} */
 	
-	public void create(Offer offer) {
+	public void saveOrUpdate(Offer offer) {
 		
-		session().save(offer);
+		session().saveOrUpdate(offer);
+		
 	}
 	
-	public boolean update(Offer offer) {
+	/*public boolean update(Offer offer) {
 		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(offer);
 
 		return jdbc.update("update offers set text=:text where id=:id", params) == 1;
-	}
+	}*/
 	
-	public Offer getOffer(int id) {
+	/*public Offer getOffer(int id) {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
 		
-		return jdbc.queryForObject("select * from offers, users where offers.username=users.username and users.enabled=true and id=:id", 
+		return jdbc.queryForObject("select * from offers, users where offers.username=users.username "
+				+ "and users.enabled=true and id=:id", 
 				params, new OfferRowMapper());
+	}*/
+	
+	public Offer getOffer(int id) {
+		
+		Criteria crit = session().createCriteria(Offer.class);
+
+		crit.createAlias("user", "u");
+		crit.add(Restrictions.eq("u.enabled", true));
+		crit.add(Restrictions.idEq(id));
+
+		return (Offer) crit.uniqueResult();		// to return an Offer object
+		
 	}
 	
 	
-	public boolean delete(int id) {
+	/*public boolean delete(int id) {
 		
 		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
 		
 		return jdbc.update("delete from offers where id = :id", params) == 1;
+		
+	}*/
+	
+	public boolean delete(int id) {
+		
+		Query query = session().createQuery("delete from Offer where id=:id");
+		query.setLong("id", id);		// replaces the placeholder 'id' with the value
+		return query.executeUpdate() == 1;
 		
 	}
 

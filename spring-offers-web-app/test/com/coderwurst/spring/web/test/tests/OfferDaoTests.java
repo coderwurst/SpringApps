@@ -1,6 +1,7 @@
 package com.coderwurst.spring.web.test.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -58,17 +59,15 @@ public class OfferDaoTests {
 		// clean out before running tests
 		jdbc.execute("delete from offers");
 		jdbc.execute("delete from users");
+		
+		createUsers();
+		
 	}
 	
 	@Test
-	public void testCreate() {
+	public void testCreateRetrieve() {
 		// given
-		usersDao.create(user1);
-		usersDao.create(user2);
-		usersDao.create(user3);
-		usersDao.create(user4);
-		
-		offersDao.create(offer1);
+		offersDao.saveOrUpdate(offer1);
 		
 		// then
 		List <Offer> offers1 = offersDao.getOffers();
@@ -76,19 +75,92 @@ public class OfferDaoTests {
 		assertEquals("should return offer for 1 users", 1, offers1.size());
 		assertEquals("retrieved offer should equal inserted offer", offer1, offers1.get(0));
 				
-		// continue to create dummy data
-		offersDao.create(offer2);
-		offersDao.create(offer3);
-		offersDao.create(offer4);
-		offersDao.create(offer5);
-		offersDao.create(offer6);
-		offersDao.create(offer7);	// user 4 is not enabled
+		// continue to create rest of dummy offers
+		createOffers();
 		
 		// then
 		List <Offer> offers2 = offersDao.getOffers();
 		
 		assertEquals("should return offers for ENABLED users", 6, offers2.size());
 		
+	}
+	
+	@Test
+	public void testGetOffersWithUsername() {
+		
+		createOffers();
+		
+		// user 2 should only have 1 offer
+		List <Offer> offersForUser2 = offersDao.getOffers(user2.getUsername());
+		
+		assertEquals("user 2 should have 1 offer", 1, offersForUser2.size());
+		
+		// test user 3 who has 3 offers
+		List <Offer> offersForUser3 = offersDao.getOffers(user3.getUsername());
+		
+		assertEquals("user 3 should have 3 offers", 3, offersForUser3.size());	
+		
+	}
+	
+	@Test
+	public void testUpdate() {
+		
+		createOffers();
+		String updatedString = "new, updated text for offer 3";
+		
+		offer3.setText(updatedString);
+		offersDao.saveOrUpdate(offer3);
+		
+		Offer retrieved = offersDao.getOffer(offer3.getId());
+		
+		assertEquals("offer 3 text should have been updated", updatedString, retrieved.getText());
+			
+	}
+	
+	@Test
+	public void testDelete() {
+		
+		createOffers();
+		List <Offer> offersStart = offersDao.getOffers();
+		
+		assertEquals("should be created with all offers", 5, offersStart.size());
+		
+		offersDao.delete(offer2.getId());
+		
+		Offer retrieved1 = offersDao.getOffer(offer2.getId());
+		
+		assertNull("offer should be null/ deleted", retrieved1);
+		
+	}
+	
+	@Test
+	public void getOffer() {
+		
+		createOffers();
+		
+		Offer retrieved = offersDao.getOffer(offer4.getId());
+		
+		assertEquals("retieved should match initial offer", offer4, retrieved);
+		
+	}
+	
+	// utility method to generate users
+	private void createUsers() {
+		usersDao.create(user1);
+		usersDao.create(user2);
+		usersDao.create(user3);
+		usersDao.create(user4);
+	}
+	
+	// utility method to generate offers
+	private void createOffers() {
+		offersDao.saveOrUpdate(offer2);
+		offersDao.saveOrUpdate(offer3);
+		offersDao.saveOrUpdate(offer4);
+		offersDao.saveOrUpdate(offer5);
+		offersDao.saveOrUpdate(offer6);
+		// user 4 is not enabled so will not count
+		offersDao.saveOrUpdate(offer7);
 	}
 	
 	@Test
@@ -102,7 +174,7 @@ public class OfferDaoTests {
 		
 		// then
 		// TEST offer has been added to DB
-		offersDao.create(offer);	
+		offersDao.saveOrUpdate(offer);	
 		
 		List <Offer> offers = offersDao.getOffers();
 		// TEST only 1 record added
@@ -114,7 +186,7 @@ public class OfferDaoTests {
 		// TEST get offer to perform an update
 		offer = offers.get(0);
 		offer.setText("updated offer text");
-		assertTrue("offer updated correctly", offersDao.update(offer));
+		offersDao.saveOrUpdate(offer);
 		
 		// retrieve updated offer
 		Offer updated = offersDao.getOffer(offer.getId());
@@ -122,7 +194,7 @@ public class OfferDaoTests {
 		assertEquals("updated offer should match retrieved offer", offer, updated);
 		
 		Offer offer2 = new Offer(user, "This is a test offer");
-		offersDao.create(offer2);
+		offersDao.saveOrUpdate(offer2);
 		
 		// TEST get by username
 		List <Offer> userOffers = offersDao.getOffers(user.getUsername());

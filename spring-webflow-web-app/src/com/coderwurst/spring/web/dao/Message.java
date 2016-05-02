@@ -34,6 +34,16 @@ public class Message implements Serializable {
 
 	}
 
+
+	public Message(String subject, String content, String name, String email, String username) {
+		// id generated automatically
+		this.subject = subject;
+		this.content = content;
+		this.name = name;
+		this.email = email;
+		this.username = username;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -82,15 +92,10 @@ public class Message implements Serializable {
 		this.username = username;
 	}
 
-	public Message(String subject, String content, String name, String email, String username) {
-		// id generated automatically
-		this.subject = subject;
-		this.content = content;
-		this.name = name;
-		this.email = email;
-		this.username = username;
+	@Override
+	public String toString() {
+		return "Message [subject=" + subject + ", content=" + content + ", name=" + name + ", email=" + email
+				+ ", username=" + username + "]";
 	}
-	
-	
 
 }

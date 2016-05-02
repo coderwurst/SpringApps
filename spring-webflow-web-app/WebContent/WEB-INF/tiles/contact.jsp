@@ -10,6 +10,9 @@
 	<sf:form method="post" commandName="message">
 	
 	<input type="hidden" name="_flowExectionKey" value="${ flowExecutionKey }"></input>
+	<input type="hidden" name="_eventId" value="send"></input>
+	
+	<input type="hidden" name="username" value="jimmyjimmy"></input>
 	
 		<table class="formtable">
 			<tr><td class="label">Your Name: </td><td><sf:input class="control" type="text" path="name"/>
@@ -21,7 +24,6 @@
 			<tr><td class="label">Your Message: </td><td><sf:textarea class="control" type="text" path="content"/>
 			<div class="error"><sf:errors path="content"></sf:errors></div></td></tr>
 			
-			</td></tr>
 			<tr><td class="label">&nbsp;</td><td><input class="control" value="send" type="submit"/></td></tr>
 		</table>
 	</sf:form>

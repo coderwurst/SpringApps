@@ -33,6 +33,10 @@ public class UsersService {
 		return usersDao.getAllUsers();
 	}
 	
+	public User getUser(String username) {
+		return usersDao.getUser(username);
+	}
+	
 	public void sendMessage(Message message) {
 		messagesDao.saveOrUpdate(message);
 	}

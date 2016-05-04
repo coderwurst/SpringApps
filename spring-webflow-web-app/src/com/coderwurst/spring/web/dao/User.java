@@ -1,5 +1,7 @@
 package com.coderwurst.spring.web.dao;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,7 +15,10 @@ import com.coderwurst.spring.web.validation.ValidEmail;
 
 @Entity
 @Table(name="Users")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 858685729031208554L;
+
 
 	@NotBlank (groups={PersistanceValidationGroup.class, FormValidationGroup.class})
 	@Size(min=8, max=15, groups={PersistanceValidationGroup.class, FormValidationGroup.class})

@@ -39,25 +39,23 @@ public class UsersDao {
 	}
 	
 	public boolean exists(String username) {
-		// Hibernate Object criteria - takes the object being returned as a param
-		Criteria crit = session().createCriteria(User.class);
 		
-		// line 73 currently returns all user objects, need to trim this down using Restrictions
-		// "username" refers to field in User object, username refers to passed in string
-		// crit.add(Restrictions.eq("username", username));
-		
-		crit.add(Restrictions.idEq(username));
-		
-		// instead of storing a list, we can use a unique result
-		User user = (User) crit.uniqueResult();
-		
-		return user != null;
+		return getUser(username) != null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
 		// query in Hibernate Query Language (HQL)
 		return session().createQuery("from User").list();
+	}
+
+	public User getUser(String username) {
+				
+		Criteria crit = session().createCriteria(User.class);
+		crit.add(Restrictions.idEq(username));
+		User user = (User) crit.uniqueResult();
+				
+		return user;
 	}
 	
 }

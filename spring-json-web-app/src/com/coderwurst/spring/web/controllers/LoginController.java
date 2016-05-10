@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,7 +54,27 @@ public class LoginController {
 		
 		return data;
 	}
-		
+
+	// http POST request, received json formatted file and returns JSON reply
+	@RequestMapping(value = "/sendMessage", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody // determines what format to use in response - finds org.codehaus-jackson dependencies
+	public Map<String, Object> sendMessage(Principal principle, @RequestBody Map<String, Object> data) {
+
+		String name = (String) data.get("name");
+		String email = (String) data.get("email");
+		String contents = (String) data.get("text");
+		int target = (Integer) data.get("target");
+
+		System.out.println("<<< Map contents: name = " + name + ", email = " + 
+		email + ", contents: " + contents + ", target = " + target);
+
+		Map<String, Object> returnMessage = new HashMap<String, Object>();
+		returnMessage.put("success", true);
+		returnMessage.put("target", target);
+
+		return returnMessage;
+	}
+
 	@RequestMapping("/login")
 	public String showLogin() {
 		logger.info("showing login page");
@@ -87,6 +108,11 @@ public class LoginController {
 	@RequestMapping("/denied")
 	public String showDenied() {
 		return "denied";
+	}
+	
+	@RequestMapping("/messages")
+	public String showMessages() {
+		return "messages";
 	}
 
 

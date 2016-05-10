@@ -18,7 +18,9 @@
 	<security:http use-expressions="true">
 		<security:intercept-url pattern="/createoffer" access="isAuthenticated()" />
 		<security:intercept-url pattern="/docreate" access="isAuthenticated()" />
+		<security:intercept-url pattern="/sendMessage" access="isAuthenticated()" />
 		<security:intercept-url pattern="/getMessages" access="isAuthenticated()" />
+		<security:intercept-url pattern="/messages" access="isAuthenticated()" />
 		<security:intercept-url pattern="/offercreated" access="isAuthenticated()" />
 		<security:intercept-url pattern="/offerdeleted" access="isAuthenticated()" />
 		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />

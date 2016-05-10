@@ -10,6 +10,7 @@ input [type-text] {
 	width: 250px;
 	padding-left: 10px;
 }
+
 input [type-password] {
 	width: 250px;
 	padding-left: 10px;
@@ -71,7 +72,7 @@ div.header {
 div.toolbar {
 	position: ralative;
 	text-align: center;
-	padding-top: 10px;
+	padding-top: 20px;
 	height: 40px;
 }
 
@@ -100,4 +101,45 @@ td.contact {
 	padding: 0px 10px;
 	vertical-align: top;
 	width: 50px;
+}
+
+.message {
+	margin-bottom: 20px;
+}
+
+span.subject {
+	font-size: large;
+	font-weight: bold;
+}
+
+span.messageBody {
+	display: block;
+	font-style: italic;	
+}
+
+span.name {
+	font-size: medium;
+}
+
+form.replyForm {
+	padding: 20px;
+	display: none;
+}
+
+textArea.replyArea {
+	width: 400px;
+	height: 250px;
+}
+
+input.replyButton {
+	display: block;
+}
+
+a.replyLink:link {
+	color: brown;
+}
+
+span.alert {
+	display: block;
+	color: green;
 }
